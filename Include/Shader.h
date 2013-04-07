@@ -26,6 +26,7 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #define SHADER_H_
 
 #include <string>
+#include "PegasusGL.h"
 
 class Shader
 {
@@ -34,10 +35,10 @@ private:
 	unsigned int fragment_shader;
 	unsigned int program;
 
-	static void LoadShaderSource(const std::string shader_file, const unsigned int shader_id);
+	void LoadShaderSource(const std::string shader_file, const unsigned int shader_id);
 	static void GetStringFromFile(const std::string file_path, char** ret_string, int* size);
 public:
-	Shader(): vertex_shader(0), fragment_shader(0), program(0){}
+	Shader(): vertex_shader(0), fragment_shader(0), program(0) {}
 	~Shader(){}
 
 	void LoadShader(const std::string vert_path, const std::string frag_path);

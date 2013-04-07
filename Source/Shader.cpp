@@ -31,75 +31,75 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
 void Shader::LoadShader(std::string vert_shader, std::string frag_shader)
 {
-	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+	vertex_shader = gl.CreateShader(GL_VERTEX_SHADER);
+	fragment_shader = gl.CreateShader(GL_FRAGMENT_SHADER);
 
 	// load shader objects into opengl
 	LoadShaderSource(vert_shader, vertex_shader);
 	LoadShaderSource(frag_shader, fragment_shader);
 
-	glCompileShader(vertex_shader);
-	glCompileShader(fragment_shader);
+	gl.CompileShader(vertex_shader);
+	gl.CompileShader(fragment_shader);
 
 	GLint result;
-	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
+	gl.GetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
 	if(result == GL_FALSE)
 	{
 		int infologLength = 0;
 		int charsWritten  = 0;
 		char *infoLog;
 
-		glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH,&infologLength);
+		gl.GetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH,&infologLength);
 
 		if (infologLength > 0)
 		{
 			infoLog = (char *)malloc(infologLength);
-			glGetShaderInfoLog(vertex_shader, infologLength, &charsWritten, infoLog);
+			gl.GetShaderInfoLog(vertex_shader, infologLength, &charsWritten, infoLog);
 			printf("%s\n",infoLog);
 			free(infoLog);
 		}
 	}
-	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &result);
+	gl.GetShaderiv(fragment_shader, GL_COMPILE_STATUS, &result);
 	if(result == GL_FALSE)
 	{
 		int infologLength = 0;
 		int charsWritten  = 0;
 		char *infoLog;
 
-		glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH,&infologLength);
+		gl.GetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH,&infologLength);
 
 		if (infologLength > 0)
 		{
 			infoLog = (char *)malloc(infologLength);
-			glGetShaderInfoLog(fragment_shader, infologLength, &charsWritten, infoLog);
+			gl.GetShaderInfoLog(fragment_shader, infologLength, &charsWritten, infoLog);
 			printf("%s\n",infoLog);
 			free(infoLog);
 		}
 	}
 
-	program = glCreateProgram();
-	glAttachShader(program, vertex_shader);
-	glAttachShader(program, fragment_shader);
+	program = gl.CreateProgram();
+	gl.AttachShader(program, vertex_shader);
+	gl.AttachShader(program, fragment_shader);
 }
 
 void Shader::LinkShader() const
 {
-	glLinkProgram(program);
+	gl.LinkProgram(program);
 
 	GLint result;
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	gl.GetProgramiv(program, GL_LINK_STATUS, &result);
 	if(result == GL_FALSE)
 	{
 		int infologLength = 0;
 		int charsWritten  = 0;
 		char *infoLog;
 
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH,&infologLength);
+		gl.GetProgramiv(program, GL_INFO_LOG_LENGTH,&infologLength);
 
 		if (infologLength > 0)
 		{
 			infoLog = (char *)malloc(infologLength);
-			glGetProgramInfoLog(program, infologLength, &charsWritten, infoLog);
+			gl.GetProgramInfoLog(program, infologLength, &charsWritten, infoLog);
 			printf("%s\n",infoLog);
 			free(infoLog);
 		}
@@ -108,21 +108,21 @@ void Shader::LinkShader() const
 
 void Shader::EnableShader() const
 {
-	glUseProgram(program);
+	gl.UseProgram(program);
 }
 
 void Shader::DisableShader() const
 {
-	glUseProgram(0);
+	gl.UseProgram(0);
 }
 
 void Shader::CleanupShader()
 {
-	glDetachShader(program, vertex_shader);
-	glDetachShader(program, fragment_shader);
-	glDeleteProgram(program);
-	glDeleteShader(vertex_shader);
-	glDeleteShader(fragment_shader);
+	gl.DetachShader(program, vertex_shader);
+	gl.DetachShader(program, fragment_shader);
+	gl.DeleteProgram(program);
+	gl.DeleteShader(vertex_shader);
+	gl.DeleteShader(fragment_shader);
 
 	program = 0;
 	vertex_shader = 0;
@@ -131,12 +131,12 @@ void Shader::CleanupShader()
 
 int Shader::GetAttribute(const std::string attrib_name) const
 {
-	return glGetAttribLocation(program, attrib_name.c_str());
+	return gl.GetAttribLocation(program, attrib_name.c_str());
 }
 
 int Shader::GetUniform(const std::string uniform_name) const
 {
-	return glGetUniformLocation(program, uniform_name.c_str());
+	return gl.GetUniformLocation(program, uniform_name.c_str());
 }
 
 void Shader::GetStringFromFile(const std::string file_path, char** ret_string, int* size)
@@ -159,7 +159,7 @@ void Shader::LoadShaderSource(const std::string shader_file, const unsigned int 
 	int size = 0;
 
 	GetStringFromFile(shader_file, &shader_source, &size);
-	glShaderSource(shader_id, 1, (const char**)&shader_source, &size);
+	gl.ShaderSource(shader_id, 1, (const char**)&shader_source, &size);
 
 	delete[] shader_source;
 }

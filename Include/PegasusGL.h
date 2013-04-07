@@ -1,31 +1,82 @@
+/*
+=============================================================================
+
+Pegasus GPL Source Code
+Copyright (C) 2012 Leo Walsh
+
+This file is part of the Pegasus GPL Source Code.  
+
+Pegasus Source Code is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Pegasus Source Code is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
+
+==============================================================================
+*/
+
 #ifndef __PEGASUSGL_H__
 #define __PEGASUSGL_H__
 #include <SDL_opengl.h>
 
-extern PFNGLGENBUFFERSPROC glGenBuffers;
-extern PFNGLBINDBUFFERPROC glBindBuffer;
-extern PFNGLBUFFERDATAPROC glBufferData;
-extern PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
-extern PFNGLUNIFORM1IPROC glUniform1i;
-extern PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
-extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
-extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
-extern PFNGLCREATESHADERPROC glCreateShader;
-extern PFNGLCOMPILESHADERPROC glCompileShader;
-extern PFNGLGETSHADERIVPROC glGetShaderiv;
-extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
-extern PFNGLCREATEPROGRAMPROC glCreateProgram;
-extern PFNGLATTACHSHADERPROC glAttachShader;
-extern PFNGLLINKPROGRAMPROC glLinkProgram;
-extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
-extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
-extern PFNGLUSEPROGRAMPROC glUseProgram;
-extern PFNGLDETACHSHADERPROC glDetachShader;
-extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
-extern PFNGLDELETESHADERPROC glDeleteShader;
-extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
-extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
-extern PFNGLSHADERSOURCEPROC glShaderSource;
-extern PFNGLACTIVETEXTUREPROC glActiveTexture;
+typedef void (APIENTRYP PFNGLCLEARCOLORPROC) (GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+typedef void (APIENTRYP PFNGLCLEARPROC) (GLbitfield mask);
+typedef void (APIENTRYP PFNGLGENTEXTURESPROC) (GLsizei n, GLuint *textures);
+typedef void (APIENTRYP PFNGLBINDTEXTUREPROC) (GLenum target, GLuint texture);
+typedef void (APIENTRYP PFNGLTEXIMAGE2DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
+typedef void (APIENTRYP PFNGLTEXPARAMETERFPROC) (GLenum target, GLenum pname, GLfloat param);
+typedef void (APIENTRYP PFNGLDRAWARRAYSPROC) (GLenum mode, GLint first, GLsizei count);
+typedef void (APIENTRYP PFNGLDELETETEXTURESPROC) (GLsizei n, const GLuint *textures);
+
+class PegasusGL
+{
+public:
+	PFNGLGENBUFFERSPROC GenBuffers;
+    PFNGLBINDBUFFERPROC BindBuffer;
+    PFNGLBUFFERDATAPROC BufferData;
+    PFNGLUNIFORMMATRIX4FVPROC UniformMatrix4fv;
+    PFNGLUNIFORM1IPROC Uniform1i;
+    PFNGLVERTEXATTRIBPOINTERPROC VertexAttribPointer;
+    PFNGLENABLEVERTEXATTRIBARRAYPROC EnableVertexAttribArray;
+    PFNGLDELETEBUFFERSPROC DeleteBuffers;
+    PFNGLCREATESHADERPROC CreateShader;
+    PFNGLCOMPILESHADERPROC CompileShader;
+    PFNGLGETSHADERIVPROC GetShaderiv;
+    PFNGLGETSHADERINFOLOGPROC GetShaderInfoLog;
+    PFNGLCREATEPROGRAMPROC CreateProgram;
+    PFNGLATTACHSHADERPROC AttachShader;
+    PFNGLLINKPROGRAMPROC LinkProgram;
+    PFNGLGETPROGRAMIVPROC GetProgramiv;
+    PFNGLGETPROGRAMINFOLOGPROC GetProgramInfoLog;
+    PFNGLUSEPROGRAMPROC UseProgram;
+    PFNGLDETACHSHADERPROC DetachShader;
+    PFNGLDELETEPROGRAMPROC DeleteProgram;
+    PFNGLDELETESHADERPROC DeleteShader;
+    PFNGLGETATTRIBLOCATIONPROC GetAttribLocation;
+    PFNGLGETUNIFORMLOCATIONPROC GetUniformLocation;
+    PFNGLSHADERSOURCEPROC ShaderSource;
+    PFNGLACTIVETEXTUREPROC ActiveTexture;
+	PFNGLCLEARCOLORPROC ClearColor;
+	PFNGLCLEARPROC Clear;
+	PFNGLGENTEXTURESPROC GenTextures;
+	PFNGLBINDTEXTUREPROC BindTexture;
+	PFNGLTEXIMAGE2DPROC TexImage2D;
+	PFNGLTEXPARAMETERFPROC TexParameterf;
+	PFNGLDRAWARRAYSPROC DrawArrays;
+	PFNGLDELETETEXTURESPROC DeleteTextures;
+
+	PegasusGL(){};
+	virtual ~PegasusGL(){};
+	void LoadFunctions();
+};
+
+extern PegasusGL gl;
 
 #endif

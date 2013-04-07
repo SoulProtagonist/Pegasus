@@ -26,15 +26,21 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #define GAMERENDERER_H_
 
 #include "IRenderer.h"
+#include "PegasusGL.h"
+#include "Shader.h"
 
 class GameRenderer : public IRenderer
 {
+private:
+	Shader shader;
+	GLuint tex_id;
+	GLuint array_buffer;
 public:
 	GameRenderer();
 	virtual ~GameRenderer(){}
-        virtual void Setup();
-        virtual void Render();
-        virtual void CleanUp();
+    virtual void Setup();
+    virtual void Render();
+    virtual void CleanUp();
 };
 
 #endif
