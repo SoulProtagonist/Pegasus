@@ -28,9 +28,11 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 class IRenderer
 {
 public:
-	IRenderer(){}
-	virtual ~IRenderer(){}
+        IRenderer(){}
+        virtual ~IRenderer(){}
+        virtual void Setup()=0;
 	virtual void Render()=0;
+        virtual void CleanUp()=0;
 };
 
 #endif

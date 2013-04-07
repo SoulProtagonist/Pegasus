@@ -26,6 +26,7 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #define ENGINE_H_
 
 #include "IRenderer.h"
+#include "PegasusGL.h"
 
 class Engine
 {

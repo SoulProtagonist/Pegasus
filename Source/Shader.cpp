@@ -24,7 +24,7 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Shader.h"
 #include <SDL.h>
-#include <GL/glew.h>
+#include "PegasusGL.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -143,7 +143,7 @@ void Shader::GetStringFromFile(const std::string file_path, char** ret_string, i
 {
 	std::ifstream file;
 	std::stringstream ss;
-	file.open(file_path, std::fstream::in);
+	file.open(file_path.c_str(), std::fstream::in);
 	ss << file.rdbuf();
 
 	*size = ss.str().size() + 1;

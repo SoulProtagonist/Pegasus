@@ -24,7 +24,6 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Engine.h"
 #include <SDL.h>
-#include <GL/glew.h>
 
 void Engine::SetupWindow()
 {
@@ -38,8 +37,6 @@ void Engine::SetupWindow()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
-
-	glewInit();
 }
 
 void Engine::CloseWindow()
@@ -51,6 +48,7 @@ void Engine::GameLoop()
 {
 	SDL_Event evt;
 	int running = true;
+	m_renderer->Setup();
 	while(running)
 	{
 		if(SDL_PollEvent(&evt))
@@ -68,6 +66,7 @@ void Engine::GameLoop()
 			SDL_GL_SwapBuffers();
 		}
 	}
+	m_renderer->CleanUp();
 }
 
 void Engine::Run()

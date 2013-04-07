@@ -32,7 +32,9 @@ class GameRenderer : public IRenderer
 public:
 	GameRenderer();
 	virtual ~GameRenderer(){}
-	virtual void Render();
+        virtual void Setup();
+        virtual void Render();
+        virtual void CleanUp();
 };
 
 #endif
