@@ -26,5 +26,6 @@ extern PFNGLDELETESHADERPROC glDeleteShader;
 extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
 extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 extern PFNGLSHADERSOURCEPROC glShaderSource;
+extern PFNGLACTIVETEXTUREPROC glActiveTexture;
 
 #endif

@@ -57,6 +57,7 @@ PFNGLDELETESHADERPROC glDeleteShader;
 PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
 PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 PFNGLSHADERSOURCEPROC glShaderSource;
+PFNGLACTIVETEXTUREPROC glActiveTexture;
 
 GameRenderer::GameRenderer()
 {
@@ -99,6 +100,7 @@ void GameRenderer::Setup()
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)SDL_GL_GetProcAddress("glGetAttribLocation");
 	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)SDL_GL_GetProcAddress("glGetUniformLocation");
 	glShaderSource = (PFNGLSHADERSOURCEPROC)SDL_GL_GetProcAddress("glShaderSource");
+	glActiveTexture = (PFNGLACTIVETEXTUREPROC)SDL_GL_GetProcAddress("glActiveTexture");
 }
 
 void GameRenderer::Render()
