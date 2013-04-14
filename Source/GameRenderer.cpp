@@ -81,7 +81,7 @@ void GameRenderer::Setup()
 	ILubyte * data = new ILubyte[ilGetInteger(IL_IMAGE_WIDTH) * ilGetInteger(IL_IMAGE_HEIGHT) * 3];
 	ilCopyPixels(0, 0, 0, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 1, IL_RGB, IL_UNSIGNED_BYTE, data); 
 	gl.ActiveTexture(GL_TEXTURE0);
-	tex_id = NULL;
+	tex_id = 0;
 	gl.GenTextures(1, &tex_id);
 	gl.BindTexture(GL_TEXTURE_2D, tex_id);
 	gl.TexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
