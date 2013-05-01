@@ -6,7 +6,7 @@
 #
 
 FIND_PATH(ASSIMP_INCLUDE_DIR Importer.hpp
-  PATH_SUFFIXES include/assimp
+  PATH_SUFFIXES assimp
 )
 
 FIND_LIBRARY(ASSIMP_LIBRARY 

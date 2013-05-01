@@ -35,8 +35,10 @@ IF(WIN32)
 		 External/Win32/SDL-1.2.15/lib/x86
 		 External/Win32/DevIL-1.7.8/lib
 		 External/Win32/DevIL-1.7.8/include
+		 External/Win32/assimp--3.0.1270-sdk/include
+		 External/Win32/assimp--3.0.1270-sdk/lib/assimp_release-dll_win32
 		 )
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG bin/Debug)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG bin)
 ENDIF()
 
 FIND_PACKAGE(SDL REQUIRED)
@@ -59,6 +61,7 @@ SET(SRC
 	Source/Main.cpp
 	Source/Shader.cpp
 	Source/PegasusGL.cpp
+	Source/Model.cpp
 )
 
 SET(LIBS
@@ -80,4 +83,5 @@ TARGET_LINK_LIBRARIES(Pegasus ${LIBS})
 IF(WIN32)
 	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/SDL-1.2.15/lib/x86/sdl.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/DevIL-1.7.8/lib/devIL.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
+	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/assimp--3.0.1270-sdk/bin/assimp_release-dll_win32/Assimp32.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 ENDIF(WIN32)

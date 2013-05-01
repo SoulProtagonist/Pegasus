@@ -21,50 +21,48 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================
 */
+#ifndef __MODEL_H__
+#define __MODEL_H__
 
-#include <SDL.h>
+#include "Importer.hpp"
+#include <string>
+#include <vector>
 #include "PegasusGL.h"
-#include "GameRenderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <vector>
-#include <il.h>
-#include <iostream>
-#include <Model.h>
 
-GameRenderer::GameRenderer()
+class Model
 {
-}
+private:
+	struct VertexDesc
+	{
+		glm::vec3 position;
+		glm::vec3 normal;
+		glm::vec2 texture_coord;
+	};
 
-struct vertex
-{
-	vertex(glm::vec3 p, glm::vec2 t) {
-		pos = p;
-		uv = t;
+	Assimp::Importer m_Importer;
+	const aiScene * m_pScene;
+
+	GLuint m_vertexBuffer;
+	GLuint m_indexBuffer;
+
+	Shader m_shader;
+
+	GLuint m_diffuseTexture;
+	int m_numIndices;
+
+public:
+	Model(){
+		m_pScene = NULL;
 	}
-	glm::vec3 pos;
-	glm::vec2 uv;
+	~Model(){};
+
+	void LoadModel(std::string filename);
+	void Render();
+	void CleanUp();
 };
 
-void GameRenderer::Setup()
-{
-	ilInit();
-	gl.LoadFunctions();
-	gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	gl.Enable(GL_DEPTH_TEST);
-	gl.ClearDepth(1.0);
-	model.LoadModel("../Resources/RoadCone/RoadCone.obj");
-}
-
-void GameRenderer::Render()
-{
-	gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	model.Render();
-}
-
-void GameRenderer::CleanUp()
-{
-	model.CleanUp();
-}
+#endif

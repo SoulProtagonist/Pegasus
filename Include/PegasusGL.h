@@ -27,13 +27,16 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #include <SDL_opengl.h>
 
 typedef void (APIENTRYP PFNGLCLEARCOLORPROC) (GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+typedef void (APIENTRYP PFNGLCLEARDEPTHPROC) (GLclampd depth);
 typedef void (APIENTRYP PFNGLCLEARPROC) (GLbitfield mask);
 typedef void (APIENTRYP PFNGLGENTEXTURESPROC) (GLsizei n, GLuint *textures);
 typedef void (APIENTRYP PFNGLBINDTEXTUREPROC) (GLenum target, GLuint texture);
 typedef void (APIENTRYP PFNGLTEXIMAGE2DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void (APIENTRYP PFNGLTEXPARAMETERFPROC) (GLenum target, GLenum pname, GLfloat param);
 typedef void (APIENTRYP PFNGLDRAWARRAYSPROC) (GLenum mode, GLint first, GLsizei count);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSPROC) (GLenum mode, GLsizei count, GLenum type, GLvoid* indices);
 typedef void (APIENTRYP PFNGLDELETETEXTURESPROC) (GLsizei n, const GLuint *textures);
+typedef void (APIENTRYP PFNGLENABLEPROC) (GLenum cap);
 
 class PegasusGL
 {
@@ -71,6 +74,10 @@ public:
 	PFNGLTEXPARAMETERFPROC TexParameterf;
 	PFNGLDRAWARRAYSPROC DrawArrays;
 	PFNGLDELETETEXTURESPROC DeleteTextures;
+	PFNGLDRAWELEMENTSPROC DrawElements;
+	PFNGLENABLEPROC Enable;
+	PFNGLCLEARDEPTHPROC ClearDepth;
+	PFNGLDISABLEVERTEXATTRIBARRAYPROC DisableVertexAttribArray;
 
 	PegasusGL(){};
 	virtual ~PegasusGL(){};

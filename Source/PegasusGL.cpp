@@ -62,4 +62,8 @@ void PegasusGL::LoadFunctions()
 	TexParameterf = (PFNGLTEXPARAMETERFPROC)SDL_GL_GetProcAddress("glTexParameterf");
 	DrawArrays = (PFNGLDRAWARRAYSPROC)SDL_GL_GetProcAddress("glDrawArrays");
 	DeleteTextures = (PFNGLDELETETEXTURESPROC)SDL_GL_GetProcAddress("glDeleteTextures");
+	DrawElements = (PFNGLDRAWELEMENTSPROC)SDL_GL_GetProcAddress("glDrawElements");
+	Enable = (PFNGLENABLEPROC)SDL_GL_GetProcAddress("glEnable");
+	ClearDepth = (PFNGLCLEARDEPTHPROC)SDL_GL_GetProcAddress("glClearDepth");
+	DisableVertexAttribArray = (PFNGLDISABLEVERTEXATTRIBARRAYPROC)SDL_GL_GetProcAddress("glDisableVertexAttribArray");
 }
