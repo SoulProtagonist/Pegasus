@@ -31,12 +31,12 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 IF(WIN32)
 	SET(CMAKE_PREFIX_PATH
-		 External/Win32/SDL-1.2.15/include
-		 External/Win32/SDL-1.2.15/lib/x86
-		 External/Win32/DevIL-1.7.8/lib
-		 External/Win32/DevIL-1.7.8/include
-		 External/Win32/assimp--3.0.1270-sdk/include
-		 External/Win32/assimp--3.0.1270-sdk/lib/assimp_release-dll_win32
+		 $ENV{SDLDIR}/lib/x86
+		 $ENV{SDLDIR}/include
+		 $ENV{DEVILDIR}/lib
+		 $ENV{DEVILDIR}/include
+		 $ENV{ASSIMPDIR}/include
+		 $ENV{ASSIMPDIR}/lib/assimp_release-dll_win32
 		 )
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG bin)
 ENDIF()
@@ -52,7 +52,7 @@ INCLUDE_DIRECTORIES(
 	${IL_INCLUDE_DIR}
 	${OPENGL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
-	External/Win32/glm-0.9.4.1
+	$ENV{GLMDIR}
 )
 
 SET(SRC
@@ -81,7 +81,7 @@ ADD_EXECUTABLE(Pegasus
 TARGET_LINK_LIBRARIES(Pegasus ${LIBS})
 
 IF(WIN32)
-	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/SDL-1.2.15/lib/x86/sdl.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
-	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/DevIL-1.7.8/lib/devIL.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
-	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different External/Win32/assimp--3.0.1270-sdk/bin/assimp_release-dll_win32/Assimp32.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
+	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $ENV{SDLDIR}/lib/x86/sdl.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
+	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $ENV{DEVILDIR}/lib/devIL.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
+	ADD_CUSTOM_COMMAND(TARGET Pegasus POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $ENV{ASSIMPDIR}/bin/assimp_release-dll_win32/Assimp32.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 ENDIF(WIN32)
