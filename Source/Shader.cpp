@@ -28,6 +28,7 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "Log.h"
 
 void Shader::LoadShader(std::string vert_shader, std::string frag_shader)
 {
@@ -53,9 +54,11 @@ void Shader::LoadShader(std::string vert_shader, std::string frag_shader)
 
 		if (infologLength > 0)
 		{
+			pegasusLog.Print("Vertex Shader failed to compile");
 			infoLog = (char *)malloc(infologLength);
 			gl.GetShaderInfoLog(vertex_shader, infologLength, &charsWritten, infoLog);
-			printf("%s\n",infoLog);
+			std::string shaderlog(infoLog);
+			pegasusLog.Print(shaderlog);
 			free(infoLog);
 		}
 	}
@@ -70,9 +73,11 @@ void Shader::LoadShader(std::string vert_shader, std::string frag_shader)
 
 		if (infologLength > 0)
 		{
+			pegasusLog.Print("Fragment Shader failed to compile");
 			infoLog = (char *)malloc(infologLength);
 			gl.GetShaderInfoLog(fragment_shader, infologLength, &charsWritten, infoLog);
-			printf("%s\n",infoLog);
+			std::string shaderlog(infoLog);
+			pegasusLog.Print(shaderlog);
 			free(infoLog);
 		}
 	}
@@ -98,9 +103,11 @@ void Shader::LinkShader() const
 
 		if (infologLength > 0)
 		{
+			pegasusLog.Print("Shader failed to link");
 			infoLog = (char *)malloc(infologLength);
 			gl.GetProgramInfoLog(program, infologLength, &charsWritten, infoLog);
-			printf("%s\n",infoLog);
+			std::string shaderlog(infoLog);
+			pegasusLog.Print(shaderlog);
 			free(infoLog);
 		}
 	}

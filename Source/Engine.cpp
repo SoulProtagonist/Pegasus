@@ -24,9 +24,11 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Engine.h"
 #include <SDL.h>
+#include "Log.h"
 
 void Engine::SetupWindow()
 {
+	pegasusLog.Print("Opening Window");
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -41,6 +43,7 @@ void Engine::SetupWindow()
 
 void Engine::CloseWindow()
 {
+	pegasusLog.Print("Closing Window");
 	SDL_Quit();
 }
 
@@ -74,9 +77,11 @@ void Engine::Run()
 	if(!m_renderer)
 		return;
 
+	pegasusLog.Init();
 	SetupWindow();
 	GameLoop();
 	CloseWindow();
+	pegasusLog.Term();
 	
 	CleanUpResources();
 }

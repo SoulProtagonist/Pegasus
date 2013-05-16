@@ -22,51 +22,27 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#include <SDL.h>
-#include "PegasusGL.h"
-#include "GameRenderer.h"
-#include "Shader.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <vector>
-#include <il.h>
+#ifndef __LOG_H__
+#define __LOG_H__
+
 #include <iostream>
-#include <Model.h>
-#include "Log.h"
+#include <fstream>
+#include <string>
 
-GameRenderer::GameRenderer()
+class Log
 {
-}
+public:
+	Log();
+	~Log();
 
-struct vertex
-{
-	vertex(glm::vec3 p, glm::vec2 t) {
-		pos = p;
-		uv = t;
-	}
-	glm::vec3 pos;
-	glm::vec2 uv;
+	void Init();
+	void Term();
+	
+	void Print(std::string message);
+private:
+	std::ofstream m_log;
 };
 
-void GameRenderer::Setup()
-{
-	pegasusLog.Print("Starting renderer");
-	ilInit();
-	gl.LoadFunctions();
-	gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	gl.Enable(GL_DEPTH_TEST);
-	gl.ClearDepth(1.0);
-	model.LoadModel("../Resources/RoadCone/RoadCone.obj");
-}
+extern Log pegasusLog;
 
-void GameRenderer::Render()
-{
-	gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	model.Render();
-}
-
-void GameRenderer::CleanUp()
-{
-	model.CleanUp();
-}
+#endif 

@@ -62,6 +62,7 @@ SET(SRC
 	Source/Shader.cpp
 	Source/PegasusGL.cpp
 	Source/Model.cpp
+	Source/Log.cpp
 )
 
 SET(LIBS

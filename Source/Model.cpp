@@ -28,7 +28,7 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <assert.h>
 #include <il.h>
-#include <iostream>
+#include "Log.h"
 
 #define member_size(type, member) sizeof(((type*)0)->member)
 
@@ -44,7 +44,7 @@ void Model::LoadModel(std::string filename) {
 	m_numIndices = 0;
 	// there should only be a single mesh for a static object
 	if(m_pScene->mNumMeshes != 1) {
-		std::cout << "error models should have exactly one mesh";
+		pegasusLog.Print("error models should have exactly one mesh");
 	}
 	const aiMesh* pMesh = m_pScene->mMeshes[0];
 	m_numIndices = pMesh->mNumFaces * 3;
@@ -78,7 +78,7 @@ void Model::LoadModel(std::string filename) {
 	ILuint image = ilGenImage();
 	ilBindImage(image);
 	if(!ilLoadImage(tex_loc.c_str())) {
-		std::cout << "image load failed";
+		pegasusLog.Print("image load failed");
 	}
 	ILubyte * data = new ILubyte[ilGetInteger(IL_IMAGE_WIDTH) * ilGetInteger(IL_IMAGE_HEIGHT) * 3];
 	ilCopyPixels(0, 0, 0, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 1, IL_RGB, IL_UNSIGNED_BYTE, data); 

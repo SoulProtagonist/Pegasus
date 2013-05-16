@@ -22,51 +22,24 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#include <SDL.h>
-#include "PegasusGL.h"
-#include "GameRenderer.h"
-#include "Shader.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <vector>
-#include <il.h>
-#include <iostream>
-#include <Model.h>
 #include "Log.h"
 
-GameRenderer::GameRenderer()
-{
+Log pegasusLog;
+
+Log::Log() {
 }
 
-struct vertex
-{
-	vertex(glm::vec3 p, glm::vec2 t) {
-		pos = p;
-		uv = t;
-	}
-	glm::vec3 pos;
-	glm::vec2 uv;
-};
-
-void GameRenderer::Setup()
-{
-	pegasusLog.Print("Starting renderer");
-	ilInit();
-	gl.LoadFunctions();
-	gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	gl.Enable(GL_DEPTH_TEST);
-	gl.ClearDepth(1.0);
-	model.LoadModel("../Resources/RoadCone/RoadCone.obj");
+Log::~Log() {
 }
 
-void GameRenderer::Render()
-{
-	gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	model.Render();
+void Log::Init() {
+	m_log.open("PegasusLog.txt");
 }
 
-void GameRenderer::CleanUp()
-{
-	model.CleanUp();
+void Log::Term() {
+	m_log.close();
+}
+
+void Log::Print(std::string message) {
+	m_log << message << std::endl;
 }
