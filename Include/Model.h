@@ -41,6 +41,16 @@ private:
 		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec2 texture_coord;
+		glm::vec3 tangent;
+		glm::vec3 bitangent;
+	};
+
+	enum TextureType
+	{
+		DIFFUSE,
+		NORMAL,
+		SPECULAR,
+		NUM_TEXTURE_TYPES
 	};
 
 	Assimp::Importer m_Importer;
@@ -51,8 +61,10 @@ private:
 
 	Shader m_shader;
 
-	GLuint m_diffuseTexture;
+	std::vector<GLuint> m_textures;
 	int m_numIndices;
+
+	void LoadTexture(TextureType type, std::string model_filename);
 
 public:
 	Model(){

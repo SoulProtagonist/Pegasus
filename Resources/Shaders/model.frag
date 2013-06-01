@@ -1,17 +1,24 @@
 #version 120
 
-uniform sampler2D diffuse;
+uniform sampler2D diffuseMap;
+uniform sampler2D normalMap;
 
-varying vec3 frag_normal;
 varying vec2 frag_uv;
+varying vec3 light_vec;
+varying vec3 eye_vec;
+varying vec3 half_vec;
 
 void main()
 {
-	vec3 lightDir = normalize( vec3(1.0, 1.0, 1.0) );
-	vec3 n = normalize( frag_normal );
-	float intensity = max( dot(lightDir, n ), 0.0);
-	vec4 color = texture2D(diffuse, frag_uv);
-	vec4 amb = color * 0.33;
+	vec3 normal = 2.0 * texture2D(normalMap, frag_uv).rgb - 1.0;
+	normal = normalize(normal);
+	float lamberFac = max( dot(light_vec, normal ), 0.0);
+	vec4 diffuseColor = vec4(0.0, 0.0, 0.0, 1.0);
+	vec4 amb = vec4(0.0, 0.0, 0.0, 1.0);
+	if(lamberFac > 0.0) 
+	{
+		diffuseColor += texture2D(diffuseMap, frag_uv) * lamberFac;	
+	}
 
-	gl_FragColor = (color * intensity) + amb;
+	gl_FragColor = diffuseColor + amb;
 }
