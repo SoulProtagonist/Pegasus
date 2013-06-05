@@ -81,6 +81,8 @@ void Model::LoadModel(std::string filename) {
 	LoadTexture(DIFFUSE, filename);
 	gl.ActiveTexture(GL_TEXTURE1);
 	LoadTexture(NORMAL, filename);
+	gl.ActiveTexture(GL_TEXTURE2);
+	LoadTexture(SPECULAR, filename);
 
 	gl.BindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
 	gl.BufferData(GL_ARRAY_BUFFER, sizeof(vertex_data[0]) * vertex_data.size(), &(vertex_data[0]), GL_STATIC_DRAW);
@@ -120,6 +122,10 @@ void Model::Render(){
 	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	gl.ActiveTexture(GL_TEXTURE1);
 	gl.BindTexture(GL_TEXTURE_2D, m_textures[NORMAL]);
+	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	gl.ActiveTexture(GL_TEXTURE2);
+	gl.BindTexture(GL_TEXTURE_2D, m_textures[SPECULAR]);
 	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	gl.DrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, (void*)0);
