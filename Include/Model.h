@@ -65,7 +65,11 @@ private:
 	int m_numIndices;
 
 	void LoadTexture(TextureType type, std::string model_filename);
-
+	void EnableArrays();
+	void DisableArrays();
+	void UseTexture(TextureType type);
+        void SetupTexturesForRender();
+	void SetVertexPointers();
 public:
 	Model(){
 		m_pScene = NULL;

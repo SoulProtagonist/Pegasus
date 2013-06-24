@@ -104,36 +104,13 @@ void Model::Render(){
 
 	gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	gl.BindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-	gl.VertexAttribPointer(m_shader.GetAttribute("position"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)0);
-	gl.VertexAttribPointer(m_shader.GetAttribute("normal"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)member_size(VertexDesc, position));
-	gl.VertexAttribPointer(m_shader.GetAttribute("texture_coord"), 2, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal)));
-	gl.VertexAttribPointer(m_shader.GetAttribute("tangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord)));
-	gl.VertexAttribPointer(m_shader.GetAttribute("bitangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord) + member_size(VertexDesc, tangent)));
-	gl.EnableVertexAttribArray(m_shader.GetAttribute("position"));
-	gl.EnableVertexAttribArray(m_shader.GetAttribute("normal"));
-	gl.EnableVertexAttribArray(m_shader.GetAttribute("texture_coord"));
-	gl.EnableVertexAttribArray(m_shader.GetAttribute("tangent"));
-	gl.EnableVertexAttribArray(m_shader.GetAttribute("bitangent"));
-	gl.Uniform1i(m_shader.GetUniform("diffuseMap"), 0);
-	gl.Uniform1i(m_shader.GetUniform("normalMap"), 1);
-	gl.ActiveTexture(GL_TEXTURE0);
-	gl.BindTexture(GL_TEXTURE_2D, m_textures[DIFFUSE]);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	gl.ActiveTexture(GL_TEXTURE1);
-	gl.BindTexture(GL_TEXTURE_2D, m_textures[NORMAL]);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	gl.ActiveTexture(GL_TEXTURE2);
-	gl.BindTexture(GL_TEXTURE_2D, m_textures[SPECULAR]);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	SetVertexPointers();
+	SetupTexturesForRender();
+	
+	EnableArrays();
 	gl.DrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, (void*)0);
-	gl.DisableVertexAttribArray(m_shader.GetAttribute("position"));
-	gl.DisableVertexAttribArray(m_shader.GetAttribute("normal"));
-	gl.DisableVertexAttribArray(m_shader.GetAttribute("texture_coord"));
-	gl.DisableVertexAttribArray(m_shader.GetAttribute("tangent"));
-	gl.DisableVertexAttribArray(m_shader.GetAttribute("bitangent"));
+	DisableArrays();
 }
 
 void Model::CleanUp() {
@@ -168,4 +145,51 @@ void Model::LoadTexture(TextureType type, std::string model_filename) {
 	gl.BindTexture(GL_TEXTURE_2D, m_textures[type]);
 	gl.TexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	delete[] data; data = NULL;
+}
+
+void Model::EnableArrays()
+{
+	gl.EnableVertexAttribArray(m_shader.GetAttribute("position"));
+	gl.EnableVertexAttribArray(m_shader.GetAttribute("normal"));
+	gl.EnableVertexAttribArray(m_shader.GetAttribute("texture_coord"));
+	gl.EnableVertexAttribArray(m_shader.GetAttribute("tangent"));
+	gl.EnableVertexAttribArray(m_shader.GetAttribute("bitangent"));
+}
+
+void Model::DisableArrays()
+{
+	gl.DisableVertexAttribArray(m_shader.GetAttribute("position"));
+	gl.DisableVertexAttribArray(m_shader.GetAttribute("normal"));
+	gl.DisableVertexAttribArray(m_shader.GetAttribute("texture_coord"));
+	gl.DisableVertexAttribArray(m_shader.GetAttribute("tangent"));
+	gl.DisableVertexAttribArray(m_shader.GetAttribute("bitangent"));
+}
+
+void Model::UseTexture(TextureType type)
+{
+	gl.BindTexture(GL_TEXTURE_2D, m_textures[type]);
+	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void Model::SetupTexturesForRender()
+{
+	gl.Uniform1i(m_shader.GetUniform("diffuseMap"), 0);
+	gl.Uniform1i(m_shader.GetUniform("normalMap"), 1);
+	gl.Uniform1i(m_shader.GetUniform("specularMap"), 2);
+	gl.ActiveTexture(GL_TEXTURE0);
+	UseTexture(DIFFUSE);
+	gl.ActiveTexture(GL_TEXTURE1);
+	UseTexture(NORMAL);
+	gl.ActiveTexture(GL_TEXTURE2);
+	UseTexture(SPECULAR);
+}
+
+void Model::SetVertexPointers()
+{
+	gl.VertexAttribPointer(m_shader.GetAttribute("position"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)0);
+	gl.VertexAttribPointer(m_shader.GetAttribute("normal"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)member_size(VertexDesc, position));
+	gl.VertexAttribPointer(m_shader.GetAttribute("texture_coord"), 2, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal)));
+	gl.VertexAttribPointer(m_shader.GetAttribute("tangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord)));
+	gl.VertexAttribPointer(m_shader.GetAttribute("bitangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord) + member_size(VertexDesc, tangent)));
 }
