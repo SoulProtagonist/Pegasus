@@ -59,7 +59,7 @@ void Engine::GameLoop()
 	int running = true;
 
 	Model* model = new Model();
-	model->SetModelFile("../Resources/RoadCone2/RoadCone.obj");
+	model->SetModelFile("../Resources/RoadCone/RoadCone.obj");
 	ModelManager::GetInst()->AddModel("MODEL1", model);
 
 	SceneNode* cone = new SceneNode("cone1");
