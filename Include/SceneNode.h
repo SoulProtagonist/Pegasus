@@ -22,16 +22,43 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
+#ifndef __SCENE_NODE__
+#define __SCENE_NODE__
+
 #define GLM_FORCE_RADIANS
-#include "Engine.h"
-#include "GameRenderer.h"
-#include <SDL.h>
 
-int main(int argc, char* argv[])
+#include <list>
+#include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
+class SceneNode
 {
-	Engine game;
-	game.RegisterRenderer(new GameRenderer());
-	game.Run();
+private:
+	std::list<SceneNode*> m_children;
+	std::string m_name;
+	std::string m_modelName;
+	
+	double m_rotVelocity;
+	glm::vec3 m_rotAxis;
+	glm::quat m_quat;
+public:
+	SceneNode(std::string node_name);
+	SceneNode(const SceneNode& entity);
+	~SceneNode();
+	SceneNode& operator=(const SceneNode& entity);
 
-	return 0;
-}
+	void AddChild(SceneNode* child);
+	std::string GetName();
+	glm::mat4 GetModelMatrix();
+	void SetRotationalVelocity(double vel);
+	void SetRotationalAxis(glm::vec3 axis);
+	void SetName(std::string name);
+	void Update(unsigned int delta);
+	void UpdateAll(unsigned int delta);
+	void SetModel(std::string model_name);
+	void RemoveAllChildren();
+	void RenderAll(glm::mat4 modelview, glm::mat4 projection);
+};
+
+#endif

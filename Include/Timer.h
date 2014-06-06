@@ -22,16 +22,25 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#define GLM_FORCE_RADIANS
-#include "Engine.h"
-#include "GameRenderer.h"
-#include <SDL.h>
+#ifndef __TIMER_H__
+#define __TIMER_H__
 
-int main(int argc, char* argv[])
+class Timer
 {
-	Engine game;
-	game.RegisterRenderer(new GameRenderer());
-	game.Run();
+private:
+	bool m_started;
+	unsigned int m_startTime;
+public:
+	Timer();
+	~Timer();
+	Timer(const Timer& other);
+	Timer& operator=(const Timer& other);
 
-	return 0;
-}
+	void Start();
+	unsigned int GetTime() const;
+	void Stop();
+	bool IsStarted() const;
+	void Wait(const unsigned int time) const;
+};
+
+#endif

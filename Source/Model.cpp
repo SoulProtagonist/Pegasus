@@ -22,6 +22,8 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
+#define GLM_FORCE_RADIANS
+
 #include "Model.h"
 #include "scene.h"
 #include "postprocess.h"
@@ -90,16 +92,16 @@ void Model::LoadModel(std::string filename) {
 	gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_data[0]) * index_data.size(), &(index_data[0]), GL_STATIC_DRAW);
 
-	glm::mat4 projection = glm::perspective(60.0f, 640.0f/480.0f, 0.5f, 1000.0f);
+	/*glm::mat4 projection = glm::perspective(60.0f, 640.0f/480.0f, 0.5f, 1000.0f);
 	glm::mat4 view = glm::lookAt(glm::vec3(50.0f, 10.0f, 20.0f), glm::vec3(0.0f, 10.0f, -35.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 mvp = projection * view;
 	glm::mat3 norm = glm::transpose(glm::inverse(glm::mat3(view)));
 	gl.UniformMatrix4fv(m_shader.GetUniform("mvp_matrix"), 1, GL_FALSE, glm::value_ptr(mvp));
 	gl.UniformMatrix4fv(m_shader.GetUniform("mv_matrix"), 1, GL_FALSE, glm::value_ptr(view));
-	gl.UniformMatrix3fv(m_shader.GetUniform("n_matrix"), 1, GL_FALSE, glm::value_ptr(norm));
+	gl.UniformMatrix3fv(m_shader.GetUniform("n_matrix"), 1, GL_FALSE, glm::value_ptr(norm));*/
 }
 
-void Model::Render(){
+void Model::Render(glm::mat4 proj, glm::mat4 view){
 	m_shader.EnableShader();
 
 	gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
@@ -107,6 +109,12 @@ void Model::Render(){
 	
 	SetVertexPointers();
 	SetupTexturesForRender();
+
+	glm::mat4 mvp = proj * view;
+	glm::mat3 norm = glm::transpose(glm::inverse(glm::mat3(view)));
+	gl.UniformMatrix4fv(m_shader.GetUniform("mvp_matrix"), 1, GL_FALSE, glm::value_ptr(mvp));
+	gl.UniformMatrix4fv(m_shader.GetUniform("mv_matrix"), 1, GL_FALSE, glm::value_ptr(view));
+	gl.UniformMatrix3fv(m_shader.GetUniform("n_matrix"), 1, GL_FALSE, glm::value_ptr(norm));
 	
 	EnableArrays();
 	gl.DrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, (void*)0);
@@ -192,4 +200,14 @@ void Model::SetVertexPointers()
 	gl.VertexAttribPointer(m_shader.GetAttribute("texture_coord"), 2, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal)));
 	gl.VertexAttribPointer(m_shader.GetAttribute("tangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord)));
 	gl.VertexAttribPointer(m_shader.GetAttribute("bitangent"), 3, GL_FLOAT, GL_FALSE, sizeof(VertexDesc), (void*)(member_size(VertexDesc, position) + member_size(VertexDesc, normal) + member_size(VertexDesc, texture_coord) + member_size(VertexDesc, tangent)));
+}
+
+void Model::SetModelFile(std::string filename)
+{
+	m_filename = filename;
+}
+
+void Model::Initialise()
+{
+	LoadModel(m_filename);
 }

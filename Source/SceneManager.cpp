@@ -22,16 +22,55 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#define GLM_FORCE_RADIANS
-#include "Engine.h"
-#include "GameRenderer.h"
-#include <SDL.h>
+#include "SceneManager.h"
 
-int main(int argc, char* argv[])
+SceneManager* SceneManager::m_instance = NULL;
+
+SceneManager::SceneManager()
 {
-	Engine game;
-	game.RegisterRenderer(new GameRenderer());
-	game.Run();
+	m_root = NULL;
+}
 
-	return 0;
+SceneManager::SceneManager(const SceneManager& mgr)
+{
+	m_root = mgr.m_root;
+	m_instance = mgr.m_instance;
+}
+
+SceneManager& SceneManager::operator=(const SceneManager& mgr)
+{
+	m_root = mgr.m_root;
+	m_instance = mgr.m_instance;
+}
+
+SceneManager::~SceneManager()
+{
+	m_root->RemoveAllChildren();
+
+	delete m_root;
+	delete m_instance;
+
+	m_root = NULL;
+	m_instance = NULL;
+}
+
+SceneManager* SceneManager::GetInst()
+{
+	if(m_instance == NULL)
+	{
+		m_instance = new SceneManager();
+	}
+
+	return m_instance;
+}
+
+
+SceneNode* SceneManager::GetRoot()
+{
+	if(m_root == NULL)
+	{
+		m_root = new SceneNode("root");
+	}
+
+	return m_root;
 }

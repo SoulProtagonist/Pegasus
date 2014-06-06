@@ -22,16 +22,57 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#define GLM_FORCE_RADIANS
-#include "Engine.h"
-#include "GameRenderer.h"
+#include "Timer.h"
 #include <SDL.h>
 
-int main(int argc, char* argv[])
-{
-	Engine game;
-	game.RegisterRenderer(new GameRenderer());
-	game.Run();
+Timer::Timer():m_started(false), m_startTime(0) 
+{}
 
+Timer::~Timer()
+{}
+
+Timer::Timer(const Timer& other):m_started(other.m_started), m_startTime(other.m_startTime)
+{
+}
+
+Timer& Timer::operator=(const Timer& other)
+{
+	m_started = other.m_started;
+	m_startTime = other.m_startTime;
+}
+
+void Timer::Start()
+{
+	m_started = true;
+	m_startTime = SDL_GetTicks();
+}
+
+void Timer::Stop()
+{
+	m_started = false;
+}
+
+unsigned int Timer::GetTime() const
+{
+	if(m_started)
+	{
+		return SDL_GetTicks() - m_startTime;
+	}
+
+	// if not started return zero
 	return 0;
+}
+
+bool Timer::IsStarted() const
+{
+	return m_started;
+}
+
+void Timer::Wait(const unsigned int time) const
+{
+	unsigned int currentTime = GetTime();
+	while(GetTime() < (currentTime + time))
+	{
+		// loops until time has passed
+	}
 }

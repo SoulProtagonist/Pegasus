@@ -22,16 +22,29 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
-#define GLM_FORCE_RADIANS
-#include "Engine.h"
-#include "GameRenderer.h"
-#include <SDL.h>
+#ifndef __MODEL_MGR__
+#define __MODEL_MGR__
 
-int main(int argc, char* argv[])
+#include "Model.h"
+#include <map>
+#include <string>
+
+class ModelManager
 {
-	Engine game;
-	game.RegisterRenderer(new GameRenderer());
-	game.Run();
+private:
+	std::map<std::string, Model*> m_modelMap;
+	static ModelManager* m_instance;
+	ModelManager();
+	ModelManager(const ModelManager& mgr);
 
-	return 0;
-}
+public:
+	~ModelManager();
+	void AddModel(std::string modelName, Model* model);
+	void RemoveModel(std::string modelName);
+	void LoadModels();
+	Model* GetModel(std::string modelName);
+
+	static ModelManager* GetInst();
+};
+
+#endif

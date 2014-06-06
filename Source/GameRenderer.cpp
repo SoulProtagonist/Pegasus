@@ -22,32 +22,24 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
+#define GLM_FORCE_RADIANS
+
 #include <SDL.h>
 #include "PegasusGL.h"
 #include "GameRenderer.h"
 #include "Shader.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <il.h>
 #include <iostream>
-#include <Model.h>
+#include "Model.h"
+#include "ModelManager.h"
 #include "Log.h"
+#include "SceneManager.h"
+#include "SceneNode.h"
 
 GameRenderer::GameRenderer()
 {
 }
-
-struct vertex
-{
-	vertex(glm::vec3 p, glm::vec2 t) {
-		pos = p;
-		uv = t;
-	}
-	glm::vec3 pos;
-	glm::vec2 uv;
-};
 
 void GameRenderer::Setup()
 {
@@ -57,16 +49,18 @@ void GameRenderer::Setup()
 	gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	gl.Enable(GL_DEPTH_TEST);
 	gl.ClearDepth(1.0);
-	model.LoadModel("../Resources/RoadCone/RoadCone.obj");
+	ModelManager::GetInst()->LoadModels();
 }
 
 void GameRenderer::Render()
 {
 	gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	model.Render();
+        glm::mat4 projection = glm::perspective(glm::radians(60.0f), 640.0f/480.0f, 0.5f, 1000.0f);
+        glm::mat4 view = glm::lookAt(glm::vec3(0.0f,30.0f, 60.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	SceneManager::GetInst()->GetRoot()->RenderAll(view, projection);
 }
 
 void GameRenderer::CleanUp()
 {
-	model.CleanUp();
+	ModelManager::GetInst()->GetModel("MODEL1")->CleanUp();
 }

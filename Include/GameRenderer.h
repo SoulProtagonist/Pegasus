@@ -37,9 +37,9 @@ private:
 public:
 	GameRenderer();
 	virtual ~GameRenderer(){}
-    virtual void Setup();
-    virtual void Render();
-    virtual void CleanUp();
+	virtual void Setup();
+	virtual void Render();
+	virtual void CleanUp();
 };
 
 #endif

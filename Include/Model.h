@@ -63,6 +63,7 @@ private:
 
 	std::vector<GLuint> m_textures;
 	int m_numIndices;
+	std::string m_filename;
 
 	void LoadTexture(TextureType type, std::string model_filename);
 	void EnableArrays();
@@ -77,7 +78,9 @@ public:
 	~Model(){};
 
 	void LoadModel(std::string filename);
-	void Render();
+	void SetModelFile(std::string filename);
+	void Initialise();
+	void Render(glm::mat4 proj, glm::mat4 view);
 	void CleanUp();
 };
 

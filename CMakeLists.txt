@@ -22,7 +22,7 @@
 #==============================================================================
 
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(Pegasus)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
@@ -40,6 +40,10 @@ IF(WIN32)
 		 )
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG bin)
 ENDIF()
+
+
+SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/lib/i386-linux-gnu)
+
 
 FIND_PACKAGE(SDL REQUIRED)
 FIND_PACKAGE(DevIL REQUIRED)
@@ -62,7 +66,11 @@ SET(SRC
 	Source/Shader.cpp
 	Source/PegasusGL.cpp
 	Source/Model.cpp
+	Source/ModelManager.cpp
 	Source/Log.cpp
+	Source/SceneNode.cpp
+	Source/SceneManager.cpp
+	Source/Timer.cpp
 )
 
 SET(LIBS

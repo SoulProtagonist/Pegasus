@@ -22,9 +22,15 @@ along with Pegasus Source Code.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================================================
 */
 
+#define GLM_FORCE_RADIANS
+
 #include "Engine.h"
 #include <SDL.h>
 #include "Log.h"
+#include "ModelManager.h"
+#include "SceneNode.h"
+#include "SceneManager.h"
+#include "Timer.h"
 
 void Engine::SetupWindow()
 {
@@ -51,6 +57,18 @@ void Engine::GameLoop()
 {
 	SDL_Event evt;
 	int running = true;
+
+	Model* model = new Model();
+	model->SetModelFile("../Resources/RoadCone2/RoadCone.obj");
+	ModelManager::GetInst()->AddModel("MODEL1", model);
+
+	SceneNode* cone = new SceneNode("cone1");
+	cone->SetModel("MODEL1");
+	cone->SetRotationalVelocity(2.0);
+	SceneManager::GetInst()->GetRoot()->AddChild(cone);
+
+	Timer timer;
+	timer.Start();
 	m_renderer->Setup();
 	while(running)
 	{
@@ -65,11 +83,16 @@ void Engine::GameLoop()
 		}
 		else
 		{
+			SceneManager::GetInst()->GetRoot()->UpdateAll(timer.GetTime());
+			timer.Start();
 			m_renderer->Render();
 			SDL_GL_SwapBuffers();
 		}
 	}
 	m_renderer->CleanUp();
+	timer.Stop();
+
+	ModelManager::GetInst()->RemoveModel("MODEL1");
 }
 
 void Engine::Run()
